@@ -27,6 +27,28 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  User.associate = (db) => {};
+  User.associate = (db) => {
+    // 일대다 관계 설정
+    db.User.hasMany(db.Post);
+    db.User.hasMany(db.Comment);
+
+    // 다대다 관계 설정
+    db.User.belongsToMany(db.Post, { through: "Like", as: "Liked" });
+
+    // 다대다 관계 설정(같은 테이블 내에서)
+    // 나를 팔로우한 사람들이 누군지
+    db.User.belongsToMany(db.User, {
+      through: "Follow",
+      as: "Followers",
+      foreignKey: "FollowingId",
+    });
+    // 내가 팔로우한 사람들이 누군지
+    // through -> table name, foreignKey -> column name
+    db.User.belongsToMany(db.User, {
+      through: "Follow",
+      as: "Followings",
+      foreignKey: "FollowerId",
+    });
+  };
   return User;
 };
