@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Hashtag.associate = (db) => {
     // 다대다 관계는 중간 테이블이 만들어진다
-    db.Hashtag.belongsToMany(db.Post);
+    db.Hashtag.belongsToMany(db.Post, { through: "PostHashtag" });
   };
   return Hashtag;
 };

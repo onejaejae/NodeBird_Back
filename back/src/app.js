@@ -1,6 +1,14 @@
 import express from "express";
 import dotenv from "dotenv";
 import postRoute from "./routes/postRoute";
+import db from "../models";
+
+db.sequelize
+  .sync()
+  .then(() => {
+    console.log("db 연결 성공");
+  })
+  .catch(console.error);
 
 dotenv.config();
 const app = express();

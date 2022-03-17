@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
 
     // 하나의 게시글에 해쉬태그 여러 개, 하나의 해쉬태그에 게시글 여러 개(ex. 인스타 해쉬태그 누르면 여러 개 게시글)
     // 다대다 관계는 둘 다 belongsToMany 사용
-    db.Post.belongsToMany(db.Hashtag);
+    db.Post.belongsToMany(db.Hashtag, { through: "PostHashtag" });
     db.Post.belongsToMany(db.User, { through: "Like", as: "Likers" });
   };
   return Post;
