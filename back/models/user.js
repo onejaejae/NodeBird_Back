@@ -50,5 +50,6 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "FollowerId",
     });
   };
+
   return User;
 };
