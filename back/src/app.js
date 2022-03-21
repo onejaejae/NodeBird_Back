@@ -1,8 +1,12 @@
 import express from "express";
 import dotenv from "dotenv";
+import passport from "passport";
+import session from "express-session";
+import cookieParser from "cookie-parser";
 import postRoute from "./routes/postRoute";
 import userRoute from "./routes/userRoute";
 import db from "../models";
+const passportConfig = require("../passport");
 
 db.sequelize
   .sync()
@@ -11,11 +15,22 @@ db.sequelize
   })
   .catch(console.error);
 
+passportConfig();
 dotenv.config();
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(
+  session({
+    saveUninitialized: false,
+    resave: false,
+    secret: process.env.COOKIE_SECRET,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use("/posts", postRoute);
 app.use("/users", userRoute);
